@@ -11,6 +11,7 @@ namespace MyWheel.Models
         {
             Reviews = new HashSet<Review>();
         }
+        public float score { get; set; }
             
         public int Id { get; set; }
         public string Name { get; set; }

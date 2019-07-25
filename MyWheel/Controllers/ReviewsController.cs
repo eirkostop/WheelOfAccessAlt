@@ -19,7 +19,8 @@ namespace MyWheel.Controllers
         // GET: Reviews1
         public ActionResult Index()
         {
-            var reviews = db.Reviews.Include(r => r.Place);
+            var id = User.Identity.GetUserId();
+            var reviews = db.Reviews.Include(r => r.Place).Where(x=>x.UserId==id);
             return View(reviews.ToList());
         }
 
@@ -93,6 +94,7 @@ namespace MyWheel.Controllers
         {
             if (ModelState.IsValid)
             {
+                review.UserId = User.Identity.GetUserId();
                 db.Entry(review).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -121,6 +123,12 @@ namespace MyWheel.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+
+            foreach (var item in db.UserAnswers.Where(x=>x.ReviewId==id))
+            {
+                db.UserAnswers.Remove(item);
+                
+            }
             Review review = db.Reviews.Find(id);
             db.Reviews.Remove(review);
             db.SaveChanges();

@@ -1,6 +1,7 @@
 ﻿using MyWheel.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -53,6 +54,24 @@ namespace MyWheel.Controllers
             db.SaveChanges();
             return Json(answer);
         }
+
+        [HttpPost]
+        [ActionName("Review")]
+        public JsonResult UpdateRating(int id)
+        {
+            var review=db.Reviews.Find(id);
+            review.Rating = db.UserAnswers.Select(x => (float)x.Answer.Value).Average();
+            db.Entry(review).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json(review);
+
+        }
+        //[HttpPost]
+        //[ActionName("Place")]
+        //public JsonResult UpdatePlace(Place Place)
+        //{
+            
+        //}
 
         //[HttpDelete]
         //[ActionName("Actor")]
