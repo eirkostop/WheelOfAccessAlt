@@ -1,0 +1,37 @@
+﻿@model MyWheel.Models.Review
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Review</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Place.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Place.Name)
+        </dd>
+
+    </dl>
+</div> 
+<div>
+    <table class="table">
+        @foreach (var item in Model.UserAnswers)
+        {
+            <tr><td>@item.Answer.Question.Text</td><td>@item.Answer.Text</td></tr>
+            
+            @item.Answer.Text
+        }
+    </table>
+
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
