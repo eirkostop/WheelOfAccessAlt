@@ -257,6 +257,10 @@
     <Compile Include="Migrations\201907251708522_sdsads.Designer.cs">
       <DependentUpon>201907251708522_sdsads.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907251837026_photo.cs" />
+    <Compile Include="Migrations\201907251837026_photo.Designer.cs">
+      <DependentUpon>201907251837026_photo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Answer.cs" />
@@ -439,6 +443,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907251708522_sdsads.resx">
       <DependentUpon>201907251708522_sdsads.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907251837026_photo.resx">
+      <DependentUpon>201907251837026_photo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

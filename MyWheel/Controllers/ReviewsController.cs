@@ -70,7 +70,6 @@ namespace MyWheel.Controllers
         // GET: Reviews1/Edit/5
         public ActionResult Edit(int? id)
         {
-            
             ViewBag.Questions = db.Questions.Include("Answers").ToList();
             if (id == null)
             {
@@ -94,6 +93,7 @@ namespace MyWheel.Controllers
         {
             if (ModelState.IsValid)
             {
+                review.Rating= db.UserAnswers.Include(x => x.Answer).Where(x => x.ReviewId == review.Id).Select(x => (float)x.Answer.Value).Average();
                 review.UserId = User.Identity.GetUserId();
                 db.Entry(review).State = EntityState.Modified;
                 db.SaveChanges();

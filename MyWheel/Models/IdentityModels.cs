@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -11,6 +12,10 @@ namespace MyWheel.Models
     public class ApplicationUser : IdentityUser
     {
         public string Hometown { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public byte[] ProfilePic { get; set; }
         public ICollection<Review> Reviews { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)

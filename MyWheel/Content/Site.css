@@ -12,8 +12,8 @@
     flex: 1 0 0;
     margin-top: 1rem;
     padding: 2rem;
-    text-align: center;
-    align-content: center;
+    /*text-align: center;
+    align-content: center;*/
     border-radius: calc(0.25rem - 1px);
     background-color: rgba(255,255,255,0.7) !important;
 }
@@ -59,8 +59,9 @@ textarea {
     background: linear-gradient(rgba(128, 128, 128,0.9),rgba(255, 255, 255, 0.9 )), url("/Account/Photo");
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: top center;
+    background-position: center center;
     background-attachment: scroll;
+    text-align:center;
 }
 
 #profile-picture {
@@ -146,6 +147,7 @@ input:focus {
     color: white;
 }
 
-    .links a {
-        margin-left: 4px;
-    }
+.links a {
+    margin-left: 4px;
+}
+

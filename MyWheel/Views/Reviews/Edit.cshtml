@@ -4,26 +4,37 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>Submit Review</h2>
 @Html.HiddenFor(model => model.Id)
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Review</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+<div class="form-horizontal">
+    <h4>Review</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
 
-        <div class="form-group">
+
+    <h5 id="rating">@Html.DisplayNameFor(model => model.Rating) : @Html.DisplayFor(model => model.Rating)</h5>
+    <h5>
+        @Html.DisplayNameFor(model => model.Place.Name) : </h5>
+    @Html.DropDownList("PlaceId", null, htmlAttributes: new { @class = "form-control" })
+    @Html.ValidationMessageFor(model => model.PlaceId, "", new { @class = "text-danger" })
+    
+</div>
+    <div>
+        <hr />
+        <h5>Questions</h5>
+        @*<div class="form-group">
             @Html.LabelFor(model => model.PlaceId, "PlaceId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("PlaceId", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.PlaceId, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <table class="table">
 
@@ -40,10 +51,10 @@
                         }
                     </td>
                     @*<td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                        </td>*@
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>*@
                 </tr>
             }
         </table>
@@ -67,8 +78,18 @@
         const radios = document.querySelectorAll('input[type="radio"]');
         for (let r of radios) {
             r.onclick = e => {
-                console.log(e.target.name)
-                console.log(e.target.value)
+                $.ajax({
+                    method: "DELETE",
+                    url: "/Rest/UserAnswer",
+                    data: {
+                        ReviewId: document.getElementById('Id').value,
+                        QuestionId: e.target.name
+                    },
+                    success: (response) => {
+                        console.log("success-deleted");
+                    }
+                });
+
                 $.ajax({
                     method: "PUT",
                     url: "/Rest/UserAnswer",
@@ -76,25 +97,24 @@
                         ReviewId: document.getElementById('Id').value,
                         AnswerId: e.target.value
                     },
+                    success: (response) => {
+                        console.log("success-added");
+                    }
+                });
+
+                $.ajax({
+                    method: "POST",
+                    url: "/Rest/Review",
+                    data: {
+                        id: document.getElementById('Id').value
+                    },
                     success: function (response) {
                         console.log(response);
                         console.log("success")
-                    }
+                        document.getElementById("rating").innerHTML = "Rating : " + response.Rating;
+                    },
+                    error: () => console.log('error')
                 })
-                //$.ajax({
-                //    method: "POST",
-                //    url: "/Rest/Place",
-                //    data: {
-                //        Id: 1,
-                //        Score: 1
-                //    },
-                //    success: function (response) {
-                //        console.log(response);
-                //        console.log("success")
-                //    }
-                //})
-
-
             }
         }
     </script>

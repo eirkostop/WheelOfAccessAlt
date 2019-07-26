@@ -322,6 +322,23 @@ namespace MyWheel.Controllers
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ProfilePic(HttpPostedFileBase Profile)
+        {
+            var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Where(x => x.Id == userId).FirstOrDefault();
+
+            byte[] image = new byte[Profile.ContentLength];
+            Profile.InputStream.Read(image, 0, Convert.ToInt32(Profile.ContentLength));
+            user.ProfilePic = image;
+            db.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)

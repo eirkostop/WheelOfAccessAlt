@@ -28,7 +28,7 @@ namespace MyWheel.Controllers
         //[HttpGet]
         //public JsonResult UserAnswer(int id)
         //{
-            
+
         //    UserAnswer answer = db.UserAnswers.Find(id);
         //    var result = new
         //    {
@@ -46,10 +46,20 @@ namespace MyWheel.Controllers
         //    return Json(actor);
         //}
 
+        //[HttpGet]
+        //public JsonResult UserAnswers()
+        //{
+        //    var query = db.UserAnswers.Select(x => new { x.ReviewId, x.Answer.QuestionId });
+        //    return Json(query, JsonRequestBehavior.AllowGet);
+        //}
+
         [HttpPut]
         [ActionName("UserAnswer")]
         public JsonResult AddUserAnswer(UserAnswer answer)
         {
+            //var query = db.UserAnswers
+            //    .Where(x => x.ReviewId == answer.ReviewId && x.Answer.QuestionId == answer.Answer.QuestionId);
+
             db.UserAnswers.Add(answer);
             db.SaveChanges();
             return Json(answer);
@@ -60,12 +70,27 @@ namespace MyWheel.Controllers
         public JsonResult UpdateRating(int id)
         {
             var review=db.Reviews.Find(id);
-            review.Rating = db.UserAnswers.Select(x => (float)x.Answer.Value).Average();
+            review.Rating = db.UserAnswers.Include(x=>x.Answer).Where(x=>x.ReviewId==id).Select(x => (float)x.Answer.Value).Average();
             db.Entry(review).State = EntityState.Modified;
             db.SaveChanges();
             return Json(review);
 
         }
+
+        [HttpDelete]
+        [ActionName("UserAnswer")]
+        public JsonResult DeleteUserAnswerBool(int ReviewId, int QuestionId)
+        {
+            var ua=db.UserAnswers.Where(x => x.Answer.QuestionId == QuestionId && x.ReviewId == ReviewId).FirstOrDefault();
+            var result=false;
+            if (ua != null){
+                db.UserAnswers.Remove(ua);
+                db.SaveChanges();
+                result = true;
+            }
+            return Json(result);
+        }
+
         //[HttpPost]
         //[ActionName("Place")]
         //public JsonResult UpdatePlace(Place Place)

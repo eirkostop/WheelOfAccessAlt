@@ -63,7 +63,27 @@ namespace MyWheel.Controllers
             AuthenticationManager.SignIn(identity);
             return new EmptyResult();
         }
+        [AllowAnonymous]
+        public FileResult Photo()
+        {
+            var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            var userId = User.Identity.GetUserId();
 
+            if (userId == null)
+            {
+                return new FilePathResult("/Pictures/WheelChair.jpg", "image/jpeg");
+
+            }
+            var user = db.Users.Where(x => x.Id == userId).FirstOrDefault();
+            if (user.ProfilePic != null)
+            {
+                return new FileContentResult(user.ProfilePic, "image/jpeg");
+            }
+            else
+            {
+                return new FilePathResult("/Pictures/WheelChair.jpg", "image/jpeg");
+            }
+        }
         //
         // GET: /Account/Login
         [AllowAnonymous]
